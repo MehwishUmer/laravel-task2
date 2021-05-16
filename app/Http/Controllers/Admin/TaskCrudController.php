@@ -90,13 +90,33 @@ class TaskCrudController extends CrudController
     {
         CRUD::setValidation(TaskRequest::class);
 
-        CRUD::setFromDb(); // fields
+        // CRUD::setFromDb(); // fields
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+        CRUD::addField(['label'     => "Name",
+                        'name' => 'name',]
+    );
+        CRUD::addField([  // Select
+            'label'     => "Project",
+            'type'      => 'select',
+            'name'      => 'project_id', // the db column for the foreign key
+         
+            // optional 
+            // 'entity' should point to the method that defines the relationship in your Model
+            // defining entity will make Backpack guess 'model' and 'attribute'
+            'entity'    => 'project', 
+         
+            // optional - manually specify the related model and attribute
+            'model'     => "App\Models\Project", // related model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+         
+            // optional - force the related options to be a custom query, instead of all();
+        ]);
+
     }
 
     /**
